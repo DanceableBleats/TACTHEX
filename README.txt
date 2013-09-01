@@ -1,0 +1,2 @@
+TactHEX Combat resolver.
+
