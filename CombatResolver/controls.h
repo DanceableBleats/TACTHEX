@@ -3,6 +3,7 @@
 #include <CommCtrl.h>
 
 
+
 //Left combatant stat boxes
 #define LEFT_ATTACK 101
 #define LEFT_DEFENSE 102
@@ -32,6 +33,7 @@
 
 //Drop downs
 #define LEFT_DROP_DOWN 301
+#define RIGHT_DROP_DOWN 302
 
 
 //Outcomes
@@ -39,6 +41,43 @@
 
 
 
-//initialize function
-int initControls(HWND hWnd);
+//Control Class
+class mainWindowControls
+{
+public:
+	mainWindowControls(HWND hWnd);
+	~mainWindowControls();
+
+	//left unit stat boxes
+	HWND hLeftComboBox;
+	HWND hLeftAttack;
+	HWND hLeftDefense;
+	HWND hLeftHP;
+	HWND hLeftAttackBonus;
+	HWND hLeftDefenseBonus;
+	HWND hLeftHPBonus;
+	HWND hLeftAttackTotal;
+	HWND hLeftDefenseTotal;
+	HWND hLeftHPTotal;
+
+
+	//right unit stat boxes
+	HWND hRightComboBox;
+	HWND hRightAttack;
+	HWND hRightDefense;
+	HWND hRightHP;
+	HWND hRightAttackBonus;
+	HWND hRightDefenseBonus;
+	HWND hRightHPBonus;
+	HWND hRightAttackTotal;
+	HWND hRightDefenseTotal;
+	HWND hRightHPTotal;
+
+
+
+};
+
+
+
+
 

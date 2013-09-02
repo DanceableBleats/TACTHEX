@@ -2,14 +2,16 @@
 // NOT MY INCLUDES //
 //-----------------//
 #include <windows.h>
+#include <iostream>
 
 //-------------//
 // MY INCLUDES //
 //-------------//
-#include "globals.h"
+//#include "globals.h"
 #include "enums.h"
 #include "menus.h"
 #include "controls.h"
+#include "unit_classes.h"
 
 //----------//
 // CONTROLS //
@@ -21,6 +23,18 @@
 // FORWARDS //
 //----------//
 LRESULT WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+//class windowControls;
+
+//=========//
+// GLOBALS //
+//=========//
+const char *clsName = "TactHEX Battle Calculator";
+char *title = "TactHEX Battle Calculator";
+bool running = true;
+HWND hWnd = NULL;
+mainWindowControls *_mainWindowControls;
+unit* leftUnit;
+unit* rightUnit;
 
 //---------------//
 // PROGRAM ENTRY //
@@ -78,8 +92,9 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR pCmdLine, int nCmdShow
     /* The window is initially hidden, we need to show it */
     ShowWindow(hWnd, SW_SHOW); 
 
-	// Initialize controls
-	initControls(hWnd);
+	// Create Control Object
+	//initControls(hWnd);
+	_mainWindowControls = new mainWindowControls(hWnd);
  
     /* The main message loop */
     while(running)                             
@@ -123,15 +138,32 @@ LRESULT WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 								MessageBox(hWnd, "Hello!", "Message", MB_ICONINFORMATION);
 								break;
 
-							case CBN_SELCHANGE:
-								/*do stuff*/
-								break;
-
 							/*case BUTTON_1:
 								MessageBox(hWnd, "Button", "Button", MB_ICONINFORMATION);
 								break;*/
-						}	
-					} break;
+						}
+						switch(HIWORD(wParam))
+						{
+							case CBN_SELCHANGE:
+								int itemIndex = SendMessage((HWND) lParam, (UINT) CB_GETCURSEL, (WPARAM) 0, (LPARAM) 0);
+								
+								if ((HWND)lParam == _mainWindowControls->hLeftComboBox)
+								{
+									//unit lUnit((UNIT_CLASS)itemIndex);
+									MessageBox(hWnd, TEXT("Left."), TEXT("Left."), MB_OK);
+									SetWindowText(_mainWindowControls->hLeftDefense, (LPCSTR)TEXT('2'));
+									
+								}
+								if ((HWND)lParam == _mainWindowControls->hRightComboBox)
+								{
+									MessageBox(hWnd, TEXT("RIGHT!"), TEXT("Item Selected"), MB_OK);
+								}
+								break;
+
+						}
+					}break;
+
+					
 				default:
 					return DefWindowProc(hWnd,uMsg,wParam,lParam);
 		}

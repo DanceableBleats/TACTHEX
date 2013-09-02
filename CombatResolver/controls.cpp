@@ -17,19 +17,34 @@
 	*/
 
 
-int initControls(HWND hWnd)
+
+
+mainWindowControls::mainWindowControls(HWND hWnd)
 {
-	//Drop Down
-	HWND hLeftComboBox=CreateWindowEx(WS_EX_CLIENTEDGE,
+	//Drop Downs
+	hLeftComboBox=CreateWindowEx(WS_EX_CLIENTEDGE,
 		WC_COMBOBOX, 
 		TEXT(""),
-		CBS_DROPDOWN | CBS_HASSTRINGS | WS_CHILD | WS_OVERLAPPED | WS_VISIBLE,
+		CBS_DROPDOWNLIST | CBS_HASSTRINGS | WS_CHILD | WS_OVERLAPPED | WS_VISIBLE,
 		50, 
 		50, 
 		220, 
 		20, 
 		hWnd, 
 		(HMENU)LEFT_DROP_DOWN, 
+		GetModuleHandle(NULL),
+		NULL);
+
+	hRightComboBox=CreateWindowEx(WS_EX_CLIENTEDGE,
+		WC_COMBOBOX, 
+		TEXT(""),
+		CBS_DROPDOWNLIST | CBS_HASSTRINGS | WS_CHILD | WS_OVERLAPPED | WS_VISIBLE,
+		550, 
+		50, 
+		220, 
+		20, 
+		hWnd, 
+		(HMENU)RIGHT_DROP_DOWN, 
 		GetModuleHandle(NULL),
 		NULL);
 
@@ -49,17 +64,19 @@ int initControls(HWND hWnd)
 
 
         // Add string to combobox.
-        SendMessage(hLeftComboBox,(UINT) CB_ADDSTRING,(WPARAM) 0,(LPARAM) unitname); 
+        SendMessage(hLeftComboBox,(UINT) CB_ADDSTRING,(WPARAM) 0,(LPARAM) unitname);
+		SendMessage(hRightComboBox,(UINT) CB_ADDSTRING,(WPARAM) 0,(LPARAM) unitname); 
     }
       
     // Send the CB_SETCURSEL message to display an initial item 
     //  in the selection field  
     SendMessage(hLeftComboBox, CB_SETCURSEL, (WPARAM)0, (LPARAM)0);
+	SendMessage(hRightComboBox, CB_SETCURSEL, (WPARAM)0, (LPARAM)0);
 
 
 
-	//stat boxes
-	HWND hLeftAttack=CreateWindowEx(WS_EX_CLIENTEDGE,
+	//Left stat boxes
+	hLeftAttack=CreateWindowEx(WS_EX_CLIENTEDGE,
 		"EDIT",
 		"",
 		WS_CHILD|WS_VISIBLE,
@@ -72,7 +89,7 @@ int initControls(HWND hWnd)
 		GetModuleHandle(NULL),
 		NULL);
 
-	HWND hLeftDefense=CreateWindowEx(WS_EX_CLIENTEDGE,
+	hLeftDefense=CreateWindowEx(WS_EX_CLIENTEDGE,
 		"EDIT",
 		"",
 		WS_CHILD|WS_VISIBLE,
@@ -85,7 +102,7 @@ int initControls(HWND hWnd)
 		GetModuleHandle(NULL),
 		NULL);
 
-	HWND hLeftHP=CreateWindowEx(WS_EX_CLIENTEDGE,
+	hLeftHP=CreateWindowEx(WS_EX_CLIENTEDGE,
 		"EDIT",
 		"",
 		WS_CHILD|WS_VISIBLE,
@@ -98,7 +115,7 @@ int initControls(HWND hWnd)
 		GetModuleHandle(NULL),
 		NULL);
 
-	HWND hLeftAttackBonus=CreateWindowEx(WS_EX_CLIENTEDGE,
+	hLeftAttackBonus=CreateWindowEx(WS_EX_CLIENTEDGE,
 		"EDIT",
 		"",
 		WS_CHILD|WS_VISIBLE,
@@ -111,7 +128,7 @@ int initControls(HWND hWnd)
 		GetModuleHandle(NULL),
 		NULL);
 
-	HWND hLeftDefenseBonus=CreateWindowEx(WS_EX_CLIENTEDGE,
+	hLeftDefenseBonus=CreateWindowEx(WS_EX_CLIENTEDGE,
 		"EDIT",
 		"",
 		WS_CHILD|WS_VISIBLE,
@@ -124,7 +141,7 @@ int initControls(HWND hWnd)
 		GetModuleHandle(NULL),
 		NULL);
 
-	HWND hLeftHPBonus=CreateWindowEx(WS_EX_CLIENTEDGE,
+	hLeftHPBonus=CreateWindowEx(WS_EX_CLIENTEDGE,
 		"EDIT",
 		"",
 		WS_CHILD|WS_VISIBLE,
@@ -137,7 +154,7 @@ int initControls(HWND hWnd)
 		GetModuleHandle(NULL),
 		NULL);
 
-	HWND hLeftAttackTotal=CreateWindowEx(WS_EX_CLIENTEDGE,
+	hLeftAttackTotal=CreateWindowEx(WS_EX_CLIENTEDGE,
 		"EDIT",
 		"",
 		WS_CHILD|WS_VISIBLE,
@@ -150,7 +167,7 @@ int initControls(HWND hWnd)
 		GetModuleHandle(NULL),
 		NULL);
 
-	HWND hLeftDefenseTotal=CreateWindowEx(WS_EX_CLIENTEDGE,
+	hLeftDefenseTotal=CreateWindowEx(WS_EX_CLIENTEDGE,
 		"EDIT",
 		"",
 		WS_CHILD|WS_VISIBLE,
@@ -163,7 +180,7 @@ int initControls(HWND hWnd)
 		GetModuleHandle(NULL),
 		NULL);
 
-	HWND hLeftHPTotal=CreateWindowEx(WS_EX_CLIENTEDGE,
+	hLeftHPTotal=CreateWindowEx(WS_EX_CLIENTEDGE,
 		"EDIT",
 		"",
 		WS_CHILD|WS_VISIBLE,
@@ -176,5 +193,125 @@ int initControls(HWND hWnd)
 		GetModuleHandle(NULL),
 		NULL);
 
-	return 1;
+	//Right stat boxes
+	hRightAttack=CreateWindowEx(WS_EX_CLIENTEDGE,
+		"EDIT",
+		"",
+		WS_CHILD|WS_VISIBLE,
+		550,
+		100,
+		60,
+		20,
+		hWnd,
+		(HMENU)RIGHT_ATTACK,
+		GetModuleHandle(NULL),
+		NULL);
+
+	hRightDefense=CreateWindowEx(WS_EX_CLIENTEDGE,
+		"EDIT",
+		"",
+		WS_CHILD|WS_VISIBLE,
+		550,
+		140,
+		60,
+		20,
+		hWnd,
+		(HMENU)RIGHT_DEFENSE,
+		GetModuleHandle(NULL),
+		NULL);
+
+	hRightHP=CreateWindowEx(WS_EX_CLIENTEDGE,
+		"EDIT",
+		"",
+		WS_CHILD|WS_VISIBLE,
+		550,
+		180,
+		60,
+		20,
+		hWnd,
+		(HMENU)RIGHT_HP,
+		GetModuleHandle(NULL),
+		NULL);
+
+	hRightAttackBonus=CreateWindowEx(WS_EX_CLIENTEDGE,
+		"EDIT",
+		"",
+		WS_CHILD|WS_VISIBLE,
+		630,
+		100,
+		60,
+		20,
+		hWnd,
+		(HMENU)RIGHT_ATTACK_BONUS,
+		GetModuleHandle(NULL),
+		NULL);
+
+	hRightDefenseBonus=CreateWindowEx(WS_EX_CLIENTEDGE,
+		"EDIT",
+		"",
+		WS_CHILD|WS_VISIBLE,
+		630,
+		140,
+		60,
+		20,
+		hWnd,
+		(HMENU)RIGHT_DEFENSE_BONUS,
+		GetModuleHandle(NULL),
+		NULL);
+
+	hRightHPBonus=CreateWindowEx(WS_EX_CLIENTEDGE,
+		"EDIT",
+		"",
+		WS_CHILD|WS_VISIBLE,
+		630,
+		180,
+		60,
+		20,
+		hWnd,
+		(HMENU)RIGHT_HP_BONUS,
+		GetModuleHandle(NULL),
+		NULL);
+
+	hRightAttackTotal=CreateWindowEx(WS_EX_CLIENTEDGE,
+		"EDIT",
+		"",
+		WS_CHILD|WS_VISIBLE,
+		710,
+		100,
+		60,
+		20,
+		hWnd,
+		(HMENU)RIGHT_ATTACK_TOTAL,
+		GetModuleHandle(NULL),
+		NULL);
+
+	hRightDefenseTotal=CreateWindowEx(WS_EX_CLIENTEDGE,
+		"EDIT",
+		"",
+		WS_CHILD|WS_VISIBLE,
+		710,
+		140,
+		60,
+		20,
+		hWnd,
+		(HMENU)RIGHT_DEFENSE_TOTAL,
+		GetModuleHandle(NULL),
+		NULL);
+
+	hRightHPTotal=CreateWindowEx(WS_EX_CLIENTEDGE,
+		"EDIT",
+		"",
+		WS_CHILD|WS_VISIBLE,
+		710,
+		180,
+		60,
+		20,
+		hWnd,
+		(HMENU)RIGHT_HP_TOTAL,
+		GetModuleHandle(NULL),
+		NULL);
+}
+
+mainWindowControls::~mainWindowControls()
+{
 }

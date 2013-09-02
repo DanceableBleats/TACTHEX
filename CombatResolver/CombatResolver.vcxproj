@@ -63,6 +63,7 @@
   <ItemGroup>
     <ClCompile Include="controls.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="unit_classes.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="controls.h" />
