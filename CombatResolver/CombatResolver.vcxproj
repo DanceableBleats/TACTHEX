@@ -20,6 +20,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
+    <UseOfMfc>Dynamic</UseOfMfc>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -64,6 +65,7 @@
     <ClCompile Include="controls.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="unit_classes.cpp" />
+    <ClCompile Include="unit_commanders.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="controls.h" />
@@ -71,6 +73,7 @@
     <ClInclude Include="globals.h" />
     <ClInclude Include="menus.h" />
     <ClInclude Include="unit_classes.h" />
+    <ClInclude Include="unit_commanders.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

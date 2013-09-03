@@ -1,6 +1,7 @@
 //-----------------//
 // NOT MY INCLUDES //
 //-----------------//
+#include <afx.h>
 #include <windows.h>
 #include <iostream>
 
@@ -33,8 +34,8 @@ char *title = "TactHEX Battle Calculator";
 bool running = true;
 HWND hWnd = NULL;
 mainWindowControls *_mainWindowControls;
-unit* leftUnit;
-unit* rightUnit;
+unit* leftUnit = NULL;
+unit* rightUnit = NULL;
 
 //---------------//
 // PROGRAM ENTRY //
@@ -113,58 +114,119 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR pCmdLine, int nCmdShow
 
 LRESULT WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{
+		
 		switch (uMsg)
+		{
+		case LOWORD(LEFT_UPDATE):
 			{
-				/* Message created when the user tries to close the window */
-				case WM_CLOSE: 
-					DestroyWindow(hWnd);
-					return 0;
+				//populate left unit stat boxes
+				SetWindowText(_mainWindowControls->hLeftAttack, leftUnit->sAttack);
+				SetWindowText(_mainWindowControls->hLeftDefense, leftUnit->sDefense);
+				SetWindowText(_mainWindowControls->hLeftHP, leftUnit->sHP);
 
-				case WM_DESTROY:
+				//Calculate left unit totals
+				CString sTotalAttack, sTotalDefense, sTotalHP;
+				int totalAttack = (leftUnit->attack + 1/*add commander bonuses here*/);
+				int totalDefense = (leftUnit->attack + 1/*add commander bonuses here*/);
+				int totalHP = (leftUnit->hp + 1/*add commander bonuses here*/);
+				sTotalAttack.Format("%d", totalAttack);
+				sTotalDefense.Format("%d", totalDefense);
+				sTotalHP.Format("%d", totalHP);
+				
+				//populate left unit totals
+				SetWindowText(_mainWindowControls->hLeftAttackTotal, (LPCSTR) sTotalAttack);
+				SetWindowText(_mainWindowControls->hLeftDefenseTotal, (LPCSTR) sTotalDefense);
+				SetWindowText(_mainWindowControls->hLeftHPTotal, (LPCSTR) sTotalHP);
+			}
+			return 0;
+
+		case LOWORD(RIGHT_UPDATE):
+			{
+				SetWindowText(_mainWindowControls->hRightAttack, rightUnit->sAttack);
+				SetWindowText(_mainWindowControls->hRightDefense, rightUnit->sDefense);
+				SetWindowText(_mainWindowControls->hRightHP, rightUnit->sHP);
+
+				//Calculate right unit totals
+				CString sTotalAttack, sTotalDefense, sTotalHP;
+				int totalAttack = (rightUnit->attack + 1/*add commander bonuses here*/);
+				int totalDefense = (rightUnit->attack + 1/*add commander bonuses here*/);
+				int totalHP = (rightUnit->hp + 1/*add commander bonuses here*/);
+				sTotalAttack.Format("%d", totalAttack);
+				sTotalDefense.Format("%d", totalDefense);
+				sTotalHP.Format("%d", totalHP);
+				
+				//populate right unit totals
+				SetWindowText(_mainWindowControls->hRightAttackTotal, (LPCSTR) sTotalAttack);
+				SetWindowText(_mainWindowControls->hRightDefenseTotal, (LPCSTR) sTotalDefense);
+				SetWindowText(_mainWindowControls->hRightHPTotal, (LPCSTR) sTotalHP);
+
+			}
+			return 0;
+		case WM_CLOSE: 
+			DestroyWindow(hWnd);
+			return 0;
+
+		case WM_DESTROY:
+			PostQuitMessage(0);
+			running = false;
+			return 0;
+					
+		case WM_COMMAND:
+			{
+				switch(LOWORD(wParam))
+				{ 		
+				case ID_FILE_EXIT:
 					PostQuitMessage(0);
 					running = false;
-					return 0;
-					
-				case WM_COMMAND:
+					break;
+								
+				case ID_FILE_MSG:
+					MessageBox(hWnd, "Hello!", "Message", MB_ICONINFORMATION);
+					break;
+
+				case TEST_BUTTON_1:	
+					SendMessage(hWnd, LOWORD(LEFT_UPDATE), 0, 0);
+					break;	
+				
+				}// End of LOWORD Switch
+
+				switch(HIWORD(wParam))
+				{
+				case CBN_SELCHANGE:
+					if ((HWND)lParam == _mainWindowControls->hLeftUnitComboBox)
 					{
-						switch(LOWORD(wParam))
-						{ 
-							case ID_FILE_EXIT:
-								PostQuitMessage(0);
-								running = false;
-								break;
-								
-							case ID_FILE_MSG:
-								MessageBox(hWnd, "Hello!", "Message", MB_ICONINFORMATION);
-								break;
-
-							/*case BUTTON_1:
-								MessageBox(hWnd, "Button", "Button", MB_ICONINFORMATION);
-								break;*/
-						}
-						switch(HIWORD(wParam))
+						int itemIndex = SendMessage((HWND) lParam, (UINT) CB_GETCURSEL, (WPARAM) 0, (LPARAM) 0);
+						if (leftUnit == NULL)
 						{
-							case CBN_SELCHANGE:
-								int itemIndex = SendMessage((HWND) lParam, (UINT) CB_GETCURSEL, (WPARAM) 0, (LPARAM) 0);
-								
-								if ((HWND)lParam == _mainWindowControls->hLeftComboBox)
-								{
-									//unit lUnit((UNIT_CLASS)itemIndex);
-									MessageBox(hWnd, TEXT("Left."), TEXT("Left."), MB_OK);
-									SetWindowText(_mainWindowControls->hLeftDefense, (LPCSTR)TEXT('2'));
-									
-								}
-								if ((HWND)lParam == _mainWindowControls->hRightComboBox)
-								{
-									MessageBox(hWnd, TEXT("RIGHT!"), TEXT("Item Selected"), MB_OK);
-								}
-								break;
-
+							leftUnit = new unit((UNIT_CLASS)itemIndex);
 						}
-					}break;
+						else 
+						{
+							leftUnit->~unit();
+							leftUnit = new unit((UNIT_CLASS)itemIndex);
+						}
+						SendMessage(hWnd, LOWORD(LEFT_UPDATE), 0, 0);
+					}
+					if ((HWND)lParam == _mainWindowControls->hRightUnitComboBox)
+					{
+						int itemIndex = SendMessage((HWND) lParam, (UINT) CB_GETCURSEL, (WPARAM) 0, (LPARAM) 0);
+						if (rightUnit == NULL)
+						{
+							rightUnit = new unit((UNIT_CLASS)itemIndex);
+						}
+						else 
+						{
+							rightUnit->~unit();
+							rightUnit = new unit((UNIT_CLASS)itemIndex);
+						}
+						SendMessage(hWnd, LOWORD(RIGHT_UPDATE), 0, 0);
+					}//end of IF lParam == _mainWindowControls->hRightComboBox
+					break; //Break out of CASE: CBN_SELCHANGE
+				}
+			}
+			break;// Break out of CASE: WM_COMMAND
 
-					
-				default:
-					return DefWindowProc(hWnd,uMsg,wParam,lParam);
-		}
+		default:
+			return DefWindowProc(hWnd,uMsg,wParam,lParam);
+		}//end of switch(umsg)
 }

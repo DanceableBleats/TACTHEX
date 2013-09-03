@@ -1,17 +1,21 @@
 #pragma once
 
+#include <afx.h>
+
+
 enum UNIT_CLASS
 {
-SWORDSMAN = 1,
-PIKEMAN,
-PIKEMAN_BONUS,
-ARCHER,
-CAVALRY,
-CAVALRY_BONUS,
-FLYER,
-FLYER_BONUS,
-UNDEAD,
-BANDIT
+	BLANK = 0,
+	SWORDSMAN,
+	PIKEMAN,
+	PIKEMAN_BONUS,
+	ARCHER,
+	CAVALRY,
+	CAVALRY_BONUS,
+	FLYER,
+	FLYER_BONUS,
+	UNDEAD,
+	BANDIT
 };
 
 
@@ -25,8 +29,9 @@ public:
 	int defense;
 	int hp;
 
+	CString sAttack;
+	CString sDefense;
+	CString sHP;
+
 	
-
-
-
 };

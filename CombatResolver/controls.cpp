@@ -1,28 +1,27 @@
 #include "controls.h"
 
-/*	// Create a push button                   BUTTON EXAMPLE!
-	HWND hWndButton=CreateWindowEx(NULL,
+mainWindowControls::mainWindowControls(HWND hWnd)
+{
+
+	// Create a push button                   BUTTON EXAMPLE!
+	hWndTestButton1=CreateWindowEx(NULL,
 		"BUTTON",
-		"CLICK!",
+		"Test",
 		WS_TABSTOP|WS_VISIBLE|
 		WS_CHILD|BS_DEFPUSHBUTTON,
-		50,
-		220,
+		300,
+		400,
 		100,
 		24,
 		hWnd,
-		(HMENU)BUTTON_1,
+		(HMENU)TEST_BUTTON_1,
 		GetModuleHandle(NULL),
 		NULL);
-	*/
 
 
 
-
-mainWindowControls::mainWindowControls(HWND hWnd)
-{
 	//Drop Downs
-	hLeftComboBox=CreateWindowEx(WS_EX_CLIENTEDGE,
+	hLeftUnitComboBox=CreateWindowEx(WS_EX_CLIENTEDGE,
 		WC_COMBOBOX, 
 		TEXT(""),
 		CBS_DROPDOWNLIST | CBS_HASSTRINGS | WS_CHILD | WS_OVERLAPPED | WS_VISIBLE,
@@ -31,11 +30,11 @@ mainWindowControls::mainWindowControls(HWND hWnd)
 		220, 
 		20, 
 		hWnd, 
-		(HMENU)LEFT_DROP_DOWN, 
+		(HMENU)LEFT_UNIT_DROP_DOWN, 
 		GetModuleHandle(NULL),
 		NULL);
 
-	hRightComboBox=CreateWindowEx(WS_EX_CLIENTEDGE,
+	hRightUnitComboBox=CreateWindowEx(WS_EX_CLIENTEDGE,
 		WC_COMBOBOX, 
 		TEXT(""),
 		CBS_DROPDOWNLIST | CBS_HASSTRINGS | WS_CHILD | WS_OVERLAPPED | WS_VISIBLE,
@@ -44,7 +43,7 @@ mainWindowControls::mainWindowControls(HWND hWnd)
 		220, 
 		20, 
 		hWnd, 
-		(HMENU)RIGHT_DROP_DOWN, 
+		(HMENU)RIGHT_UNIT_DROP_DOWN, 
 		GetModuleHandle(NULL),
 		NULL);
 
@@ -64,14 +63,44 @@ mainWindowControls::mainWindowControls(HWND hWnd)
 
 
         // Add string to combobox.
-        SendMessage(hLeftComboBox,(UINT) CB_ADDSTRING,(WPARAM) 0,(LPARAM) unitname);
-		SendMessage(hRightComboBox,(UINT) CB_ADDSTRING,(WPARAM) 0,(LPARAM) unitname); 
+        SendMessage(hLeftUnitComboBox,(UINT) CB_ADDSTRING,(WPARAM) 0,(LPARAM) unitname);
+		SendMessage(hRightUnitComboBox,(UINT) CB_ADDSTRING,(WPARAM) 0,(LPARAM) unitname); 
     }
+
+	hLeftCommanderComboBox=CreateWindowEx(WS_EX_CLIENTEDGE,
+		WC_COMBOBOX, 
+		TEXT(""),
+		CBS_DROPDOWNLIST | CBS_HASSTRINGS | WS_CHILD | WS_OVERLAPPED | WS_VISIBLE,
+		50, 
+		90, 
+		220, 
+		20, 
+		hWnd, 
+		(HMENU)LEFT_COMMANDER_DROP_DOWN, 
+		GetModuleHandle(NULL),
+		NULL);
+
+	hRightCommanderComboBox=CreateWindowEx(WS_EX_CLIENTEDGE,
+		WC_COMBOBOX, 
+		TEXT(""),
+		CBS_DROPDOWNLIST | CBS_HASSTRINGS | WS_CHILD | WS_OVERLAPPED | WS_VISIBLE,
+		550, 
+		90, 
+		220, 
+		20, 
+		hWnd, 
+		(HMENU)RIGHT_COMMANDER_DROP_DOWN, 
+		GetModuleHandle(NULL),
+		NULL);
+
+
+
+
       
     // Send the CB_SETCURSEL message to display an initial item 
     //  in the selection field  
-    SendMessage(hLeftComboBox, CB_SETCURSEL, (WPARAM)0, (LPARAM)0);
-	SendMessage(hRightComboBox, CB_SETCURSEL, (WPARAM)0, (LPARAM)0);
+    //  SendMessage(hLeftCommanderComboBox, CB_SETCURSEL, (WPARAM)0, (LPARAM)0);
+	//  SendMessage(hRightCommanderComboBox, CB_SETCURSEL, (WPARAM)0, (LPARAM)0);
 
 
 
@@ -81,7 +110,7 @@ mainWindowControls::mainWindowControls(HWND hWnd)
 		"",
 		WS_CHILD|WS_VISIBLE,
 		50,
-		100,
+		140,
 		60,
 		20,
 		hWnd,
@@ -94,7 +123,7 @@ mainWindowControls::mainWindowControls(HWND hWnd)
 		"",
 		WS_CHILD|WS_VISIBLE,
 		50,
-		140,
+		180,
 		60,
 		20,
 		hWnd,
@@ -107,7 +136,7 @@ mainWindowControls::mainWindowControls(HWND hWnd)
 		"",
 		WS_CHILD|WS_VISIBLE,
 		50,
-		180,
+		220,
 		60,
 		20,
 		hWnd,
@@ -120,7 +149,7 @@ mainWindowControls::mainWindowControls(HWND hWnd)
 		"",
 		WS_CHILD|WS_VISIBLE,
 		130,
-		100,
+		140,
 		60,
 		20,
 		hWnd,
@@ -133,7 +162,7 @@ mainWindowControls::mainWindowControls(HWND hWnd)
 		"",
 		WS_CHILD|WS_VISIBLE,
 		130,
-		140,
+		180,
 		60,
 		20,
 		hWnd,
@@ -146,7 +175,7 @@ mainWindowControls::mainWindowControls(HWND hWnd)
 		"",
 		WS_CHILD|WS_VISIBLE,
 		130,
-		180,
+		220,
 		60,
 		20,
 		hWnd,
@@ -159,7 +188,7 @@ mainWindowControls::mainWindowControls(HWND hWnd)
 		"",
 		WS_CHILD|WS_VISIBLE,
 		210,
-		100,
+		140,
 		60,
 		20,
 		hWnd,
@@ -172,7 +201,7 @@ mainWindowControls::mainWindowControls(HWND hWnd)
 		"",
 		WS_CHILD|WS_VISIBLE,
 		210,
-		140,
+		180,
 		60,
 		20,
 		hWnd,
@@ -185,7 +214,7 @@ mainWindowControls::mainWindowControls(HWND hWnd)
 		"",
 		WS_CHILD|WS_VISIBLE,
 		210,
-		180,
+		220,
 		60,
 		20,
 		hWnd,
@@ -199,7 +228,7 @@ mainWindowControls::mainWindowControls(HWND hWnd)
 		"",
 		WS_CHILD|WS_VISIBLE,
 		550,
-		100,
+		140,
 		60,
 		20,
 		hWnd,
@@ -212,7 +241,7 @@ mainWindowControls::mainWindowControls(HWND hWnd)
 		"",
 		WS_CHILD|WS_VISIBLE,
 		550,
-		140,
+		180,
 		60,
 		20,
 		hWnd,
@@ -225,7 +254,7 @@ mainWindowControls::mainWindowControls(HWND hWnd)
 		"",
 		WS_CHILD|WS_VISIBLE,
 		550,
-		180,
+		220,
 		60,
 		20,
 		hWnd,
@@ -238,7 +267,7 @@ mainWindowControls::mainWindowControls(HWND hWnd)
 		"",
 		WS_CHILD|WS_VISIBLE,
 		630,
-		100,
+		140,
 		60,
 		20,
 		hWnd,
@@ -251,7 +280,7 @@ mainWindowControls::mainWindowControls(HWND hWnd)
 		"",
 		WS_CHILD|WS_VISIBLE,
 		630,
-		140,
+		180,
 		60,
 		20,
 		hWnd,
@@ -264,7 +293,7 @@ mainWindowControls::mainWindowControls(HWND hWnd)
 		"",
 		WS_CHILD|WS_VISIBLE,
 		630,
-		180,
+		220,
 		60,
 		20,
 		hWnd,
@@ -277,7 +306,7 @@ mainWindowControls::mainWindowControls(HWND hWnd)
 		"",
 		WS_CHILD|WS_VISIBLE,
 		710,
-		100,
+		140,
 		60,
 		20,
 		hWnd,
@@ -290,7 +319,7 @@ mainWindowControls::mainWindowControls(HWND hWnd)
 		"",
 		WS_CHILD|WS_VISIBLE,
 		710,
-		140,
+		180,
 		60,
 		20,
 		hWnd,
@@ -303,13 +332,57 @@ mainWindowControls::mainWindowControls(HWND hWnd)
 		"",
 		WS_CHILD|WS_VISIBLE,
 		710,
-		180,
+		220,
 		60,
 		20,
 		hWnd,
 		(HMENU)RIGHT_HP_TOTAL,
 		GetModuleHandle(NULL),
 		NULL);
+
+	//Outcomes
+	hWinner=CreateWindowEx(WS_EX_CLIENTEDGE,
+		"EDIT",
+		"",
+		WS_CHILD|WS_VISIBLE,
+		380,
+		290,
+		60,
+		20,
+		hWnd,
+		(HMENU)WINNER,
+		GetModuleHandle(NULL),
+		NULL);
+
+	hLeftRemainingHP=CreateWindowEx(WS_EX_CLIENTEDGE,
+		"EDIT",
+		"",
+		WS_CHILD|WS_VISIBLE,
+		300,
+		290,
+		60,
+		20,
+		hWnd,
+		(HMENU)LEFT_REMAINING_HP,
+		GetModuleHandle(NULL),
+		NULL);
+
+	hRightRemainingHP=CreateWindowEx(WS_EX_CLIENTEDGE,
+		"EDIT",
+		"",
+		WS_CHILD|WS_VISIBLE,
+		460,
+		290,
+		60,
+		20,
+		hWnd,
+		(HMENU)RIGHT_REMAINING_HP,
+		GetModuleHandle(NULL),
+		NULL);
+
+
+
+
 }
 
 mainWindowControls::~mainWindowControls()
