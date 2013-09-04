@@ -31,6 +31,8 @@
 LRESULT WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 //LRESULT ChldProc(HWND hChWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 //class windowControls;
+int strtoi(char[]);
+int bufftoi(char[]);
 
 //=========//
 // GLOBALS //
@@ -45,8 +47,9 @@ HWND hChWnd = NULL;
 mainWindowControls *_mainWindowControls;
 unit* leftUnit = NULL;
 unit* rightUnit = NULL;
-commanderList* leftCommander = NULL;
-commanderList* rightCommander = NULL;
+commander* leftCommander = NULL;
+commander* rightCommander = NULL;
+commanderList* editCommander = NULL;
 
 //---------------//
 // PROGRAM ENTRY //
@@ -54,7 +57,7 @@ commanderList* rightCommander = NULL;
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR pCmdLine, int nCmdShow)
 
 {
-	WNDCLASSEX  WndEx, ComWndw;                             
+	WNDCLASSEX  WndEx;                             
 
 	MSG msg;
 
@@ -149,15 +152,35 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR pCmdLine, int nCmdShow
 
 	
 	//make sure the files needed exist, otherwise create them. 
+	std::ifstream checkFile;
 	std::ofstream newFile;
-	newFile.open ("commanders.bin");
-	newFile.close();
-	newFile.open ("comm_back.bin");
-	newFile.close();
+	checkFile.open("commanders.bin");
+	if (!checkFile.is_open())
+	{
+		MessageBox(NULL, "Commanders.bin not opened, creating new.", "file not found", MB_OK);
+		newFile.open("commanders.bin");
+		newFile.close();
+	}
+	else
+	{
+		checkFile.close();
+	}
+	checkFile.open("comm_back.bin");
+	if (!checkFile.is_open())
+	{
+		MessageBox(NULL, "comm_back.bin not opened, creating new.", "file not found", MB_OK);
+		newFile.open("comm_back.bin");
+		newFile.close();
+	}
+	else
+	{
+		checkFile.close();
+	}
 	
 	//load the commander objects
-	leftCommander = new commanderList();
-	rightCommander - new commanderList();
+	//leftCommander = new commanderList();
+	//rightCommander = new commanderList();
+	editCommander = new commanderList();
 
 
 	// Create Control Object
@@ -213,19 +236,41 @@ LRESULT WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				SetWindowText(_mainWindowControls->hRightDefense, rightUnit->sDefense);
 				SetWindowText(_mainWindowControls->hRightHP, rightUnit->sHP);
 
-				//Calculate right unit totals
-				CString sTotalAttack, sTotalDefense, sTotalHP;
-				int totalAttack = (rightUnit->attack + 1/*add commander bonuses here*/);
-				int totalDefense = (rightUnit->attack + 1/*add commander bonuses here*/);
-				int totalHP = (rightUnit->hp + 1/*add commander bonuses here*/);
-				sTotalAttack.Format("%d", totalAttack);
-				sTotalDefense.Format("%d", totalDefense);
-				sTotalHP.Format("%d", totalHP);
-				
-				//populate right unit totals
-				SetWindowText(_mainWindowControls->hRightAttackTotal, (LPCSTR) sTotalAttack);
-				SetWindowText(_mainWindowControls->hRightDefenseTotal, (LPCSTR) sTotalDefense);
-				SetWindowText(_mainWindowControls->hRightHPTotal, (LPCSTR) sTotalHP);
+				SetWindowText(_mainWindowControls->hRightAttackBonus, rightCommander->csAttackBonus);
+				SetWindowText(_mainWindowControls->hRightDefenseBonus, rightCommander->csDefenseBonus);
+				SetWindowText(_mainWindowControls->hRightHPBonus, rightCommander->csHPBonus);
+
+				int len = GetWindowTextLength(_mainWindowControls->hRightAttack);
+				char buffer[6];
+				memset(buffer, ' ', 6);
+				GetWindowText(_mainWindowControls->hRightAttack, buffer, len + 1);
+				int iAttack = strtoi(buffer);
+
+				len = GetWindowTextLength(_mainWindowControls->hRightAttackBonus);
+				memset(buffer, ' ', 6);
+				GetWindowText(_mainWindowControls->hRightAttackBonus, buffer, len + 1);
+				iAttack += strtoi(buffer);
+
+				CString csAttack;
+				csAttack.Format("%d\n", iAttack);
+				SetWindowText(_mainWindowControls->hRightAttackTotal, csAttack);
+
+
+				////Calculate right unit totals
+				//CString sTotalAttack, sTotalDefense, sTotalHP;
+				//int totalAttack = (rightUnit->attack + 1/*add commander bonuses here*/);
+				//int totalDefense = (rightUnit->attack + 1/*add commander bonuses here*/);
+				//int totalHP = (rightUnit->hp + 1/*add commander bonuses here*/);
+				//sTotalAttack.Format("%d", totalAttack);
+				//sTotalDefense.Format("%d", totalDefense);
+				//sTotalHP.Format("%d", totalHP);
+				//
+				////populate right unit totals
+				//SetWindowText(_mainWindowControls->hRightAttackTotal, (LPCSTR) sTotalAttack);
+				//SetWindowText(_mainWindowControls->hRightDefenseTotal, (LPCSTR) sTotalDefense);
+				//SetWindowText(_mainWindowControls->hRightHPTotal, (LPCSTR) sTotalHP);
+
+
 
 			}
 			return 0;
@@ -253,8 +298,51 @@ LRESULT WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 					break;
 
 				case TEST_BUTTON_1:	
-					MessageBox(hWnd, "TEST!", "TEST", MB_ICONINFORMATION);
+					{
+						int len = 0;
+						GetWindowTextLength(_mainWindowControls->hEditCommanderAttack);
+						char buffer[10];
+						GetWindowText(_mainWindowControls->hEditCommanderAttack, buffer, len);
+						MessageBox(hWnd, (LPCSTR)&buffer, "TEST", MB_ICONINFORMATION);
+					}
 					break;	
+
+				case COMMANDER_SAVE:
+					{
+						//MessageBox(hWnd, "Button clicked", "TEST", MB_ICONINFORMATION);
+
+						int nameLen = GetWindowTextLength(_mainWindowControls->hEditCommanderName);
+						int attLen = GetWindowTextLength(_mainWindowControls->hEditCommanderAttack);
+						int defLen = GetWindowTextLength(_mainWindowControls->hEditCommanderDefense);
+						int hpLen = GetWindowTextLength(_mainWindowControls->hEditCommanderHP);
+
+						char cName[50];
+						memset(cName, ' ', 50);
+						GetWindowText(_mainWindowControls->hEditCommanderName, cName, nameLen + 1);
+						CString csName(cName);
+
+						char cAtt[3];
+						memset(cAtt, '0', 3);
+						GetWindowText(_mainWindowControls->hEditCommanderAttack, cAtt, attLen + 1);
+						int iAtt = strtoi(cAtt);
+
+						char cDef[3];
+						memset(cDef, '0', 3);
+						GetWindowText(_mainWindowControls->hEditCommanderDefense, cDef, defLen + 1);
+						int iDef = strtoi(cDef);
+
+						char cHP[3];
+						memset(cHP, '0', 3);
+						GetWindowText(_mainWindowControls->hEditCommanderHP, cHP, hpLen + 1);
+						int iHP = strtoi(cHP);
+
+						editCommander->saveCommander(csName, iAtt, iDef, iHP);
+						editCommander->saveList();
+
+						break;
+
+
+					}//end of COMMANDER_SAVE button case
 
 			
 				}// End of LOWORD Switch
@@ -290,6 +378,27 @@ LRESULT WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 						}
 						SendMessage(hWnd, LOWORD(RIGHT_UPDATE), 0, 0);
 					}//end of IF lParam == _mainWindowControls->hRightComboBox
+
+
+					if ((HWND)lParam == _mainWindowControls->hRightCommanderComboBox)
+					{
+						int itemIndex = SendMessage((HWND) lParam, (UINT) CB_GETCURSEL, (WPARAM) 0, (LPARAM) 0);
+						if (rightCommander == NULL)
+						{
+							rightCommander = new commander(itemIndex, editCommander);
+						}
+						else 
+						{
+							rightCommander->~commander();
+							rightCommander = new commander(itemIndex, editCommander);
+						}
+						SendMessage(hWnd, LOWORD(RIGHT_UPDATE), 0, 0);
+					}
+
+
+
+
+
 					break; //Break out of CASE: CBN_SELCHANGE
 				}
 			}
@@ -300,4 +409,46 @@ LRESULT WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		}//end of switch(umsg)
 }
 
+
+int strtoi(char buff[])
+{
+	int x = 0, m = 0;
+	CString csStr(buff);
+	for (int i = csStr.GetLength() - 1; i >= 0; --i)
+	{
+		//if (isdigit(csStr[i]))
+		//{
+			x += ((pow(10.0, m)) * ((csStr[i]) - '0'));
+			++m;
+		//}
+		//else 
+		//{
+		//	MessageBox(NULL, "Unable to convert string to int", "ERROR", MB_OK | MB_ICONERROR);
+		//	return -1;
+		//}
+	}
+	//MessageBox(NULL, (LPCSTR) x, "Converted to", MB_OK);
+	return x;
+}
+
+int bufftoi(char buff[])
+{
+	int len = 0;
+	while (buff[len] != '\0')
+	{
+		++len;
+	}
+	
+	if (len == 0){return 0;}
+
+	int x = 0, m = 0;
+	int i = len - 1;
+
+	for (i; i >= 0; --i)
+	{
+		x += ((pow(10.0, m)) * ((buff[i]) - '0'));
+		++m;
+	}
+	return x;
+}
 

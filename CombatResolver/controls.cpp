@@ -2,14 +2,17 @@
 //#include "unit_classes.h"
 #include "unit_commanders.h"
 
-extern commanderList* leftCommander;
-extern commanderList* rightCommander;
+//extern commander* leftCommander;
+//extern commander* rightCommander;
+extern commanderList* editCommander;
+
+
 
 mainWindowControls::mainWindowControls(HWND hWnd)
 {
 
 	// Create a push button                   BUTTON EXAMPLE!
-	hOpenCommandersButton=CreateWindowEx(NULL,
+	hWndTestButton1=CreateWindowEx(NULL,
 		"BUTTON",
 		"test",
 		WS_TABSTOP|WS_VISIBLE|
@@ -98,22 +101,37 @@ mainWindowControls::mainWindowControls(HWND hWnd)
 		GetModuleHandle(NULL),
 		NULL);
 
-		
-	for (leftCommander->iter = leftCommander->commanderVector.begin(); leftCommander->iter != leftCommander->commanderVector.end(); (leftCommander->iter)++)
+	hEditCommanderName=CreateWindowEx(WS_EX_CLIENTEDGE,
+		WC_COMBOBOX, 
+		TEXT(""),
+		CBS_DROPDOWN | CBS_HASSTRINGS | WS_CHILD | WS_OVERLAPPED | WS_VISIBLE,
+		260, 
+		400, 
+		300, 
+		20, 
+		hWnd, 
+		(HMENU)COMMANDER_NAME, 
+		GetModuleHandle(NULL),
+		NULL);
+
+	//Move this to a redraw message case in the windproc and call it from here. Add in a function to delete
+	// delete all strings and then re-add so that we can er-draw all three lists whenever the contents changes.
+	for (editCommander->iter = editCommander->commanderVector.begin(); editCommander->iter != editCommander->commanderVector.end(); (editCommander->iter)++)
 	{
-		std::vector<commander*>::iterator iter2 = leftCommander->iter;
+		std::vector<commander*>::iterator iter2 = editCommander->iter;
 		
-		SendMessage(hLeftCommanderComboBox,(UINT) CB_ADDSTRING,(WPARAM) 0,(LPARAM) (*iter2)->sName.GetBuffer());
-		SendMessage(hRightCommanderComboBox,(UINT) CB_ADDSTRING,(WPARAM) 0,(LPARAM) (*iter2)->sName.GetBuffer());
+		SendMessage(hLeftCommanderComboBox,(UINT) CB_ADDSTRING,(WPARAM) 0,(LPARAM) (*iter2)->csName.GetBuffer());
+		SendMessage(hRightCommanderComboBox,(UINT) CB_ADDSTRING,(WPARAM) 0,(LPARAM) (*iter2)->csName.GetBuffer());
+		SendMessage(hEditCommanderName,(UINT) CB_ADDSTRING,(WPARAM) 0,(LPARAM) (*iter2)->csName.GetBuffer());
+		
 	}
 
 
       
     // Send the CB_SETCURSEL message to display an initial item 
     //  in the selection field  
-    //  SendMessage(hLeftCommanderComboBox, CB_SETCURSEL, (WPARAM)0, (LPARAM)0);
-	//  SendMessage(hRightCommanderComboBox, CB_SETCURSEL, (WPARAM)0, (LPARAM)0);
-
+	//SendMessage(hLeftCommanderComboBox, CB_SETCURSEL, (WPARAM)0, (LPARAM)0);
+	//SendMessage(hRightCommanderComboBox, CBN_SETCURSEL, (WPARAM)0, (LPARAM)0);
 	
 
 	//Left stat boxes
@@ -394,7 +412,110 @@ mainWindowControls::mainWindowControls(HWND hWnd)
 
 
 
+	//=========================//
+	// Commander edit controls //
+	//=========================//
 
+	//Combo Box   //moved up to other combo boxes
+/*	hEditCommanderName=CreateWindowEx(WS_EX_CLIENTEDGE,
+		WC_COMBOBOX, 
+		TEXT(""),
+		CBS_DROPDOWN | CBS_HASSTRINGS | WS_CHILD | WS_OVERLAPPED | WS_VISIBLE,
+		260, 
+		400, 
+		300, 
+		20, 
+		hWnd, 
+		(HMENU)COMMANDER_NAME, 
+		GetModuleHandle(NULL),
+		NULL);
+		*/
+
+	//Edits
+	hEditCommanderAttack=CreateWindowEx(WS_EX_CLIENTEDGE,
+		"EDIT",
+		"",
+		WS_CHILD|WS_VISIBLE,
+		380,
+		440,
+		60,
+		20,
+		hWnd,
+		(HMENU)COMMANDER_ATTACK_BONUS,
+		GetModuleHandle(NULL),
+		NULL);
+
+	
+
+
+	hEditCommanderDefense=CreateWindowEx(WS_EX_CLIENTEDGE,
+		"EDIT",
+		"",
+		WS_CHILD|WS_VISIBLE,
+		380,
+		480,
+		60,
+		20,
+		hWnd,
+		(HMENU)COMMANDER_DEFENSE_BONUS,
+		GetModuleHandle(NULL),
+		NULL);
+
+	hEditCommanderHP=CreateWindowEx(WS_EX_CLIENTEDGE,
+		"EDIT",
+		"",
+		WS_CHILD|WS_VISIBLE,
+		380,
+		520,
+		60,
+		20,
+		hWnd,
+		(HMENU)COMMANDER_HP_BONUS,
+		GetModuleHandle(NULL),
+		NULL);
+
+	//Buttons
+	hNewCommanderButton=CreateWindowEx(NULL,
+		"BUTTON",
+		"New",
+		WS_TABSTOP|WS_VISIBLE|
+		WS_CHILD|BS_DEFPUSHBUTTON,
+		260,
+		560,
+		100,
+		24,
+		hWnd,
+		(HMENU)COMMANDER_NEW,
+		GetModuleHandle(NULL),
+		NULL);
+
+	hSaveCommanderButton=CreateWindowEx(NULL,
+		"BUTTON",
+		"Save",
+		WS_TABSTOP|WS_VISIBLE|
+		WS_CHILD|BS_DEFPUSHBUTTON,
+		380,
+		560,
+		100,
+		24,
+		hWnd,
+		(HMENU)COMMANDER_SAVE,
+		GetModuleHandle(NULL),
+		NULL);
+
+	hDeleteCommanderButton=CreateWindowEx(NULL,
+		"BUTTON",
+		"Delete",
+		WS_TABSTOP|WS_VISIBLE|
+		WS_CHILD|BS_DEFPUSHBUTTON,
+		500,
+		560,
+		100,
+		24,
+		hWnd,
+		(HMENU)COMMANDER_DELETE,
+		GetModuleHandle(NULL),
+		NULL);
 }
 
 mainWindowControls::~mainWindowControls()

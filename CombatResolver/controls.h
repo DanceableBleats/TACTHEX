@@ -43,6 +43,7 @@
 #define RANGED_ATTACK					203
 #define COMMANDER_SAVE					204
 #define COMMANDER_NEW					205
+#define COMMANDER_DELETE				206
 
 //Drop downs
 #define LEFT_UNIT_DROP_DOWN				301
@@ -57,8 +58,8 @@
 #define RIGHT_REMAINING_HP				403
 
 //Commander Edit Boxes
-#define COMMANDER_PLAYER_NAME			501
-#define COMMANDER_CHARACTER_NAME		502
+#define COMMANDER_NAME					501
+//#define COMMANDER_CHARACTER_NAME		502
 #define COMMANDER_ATTACK_BONUS			503
 #define COMMANDER_DEFENSE_BONUS			504
 #define COMMANDER_HP_BONUS				505
@@ -81,8 +82,7 @@ public:
 	
 	//Buttons
 	HWND hWndTestButton1;
-	HWND hOpenCommandersButton;
-
+	
 	//left unit stat boxes
 	HWND hLeftAttack;
 	HWND hLeftDefense;
@@ -110,6 +110,17 @@ public:
 	HWND hWinner;
 	HWND hLeftRemainingHP;
 	HWND hRightRemainingHP;
+
+	//commander edit boxes
+	HWND hEditCommanderName;
+	HWND hEditCommanderAttack;
+	HWND hEditCommanderDefense;
+	HWND hEditCommanderHP;
+
+	//commander edit buttons
+	HWND hNewCommanderButton;
+	HWND hSaveCommanderButton;
+	HWND hDeleteCommanderButton;
 
 
 };
