@@ -1,9 +1,12 @@
 //-----------------//
 // NOT MY INCLUDES //
 //-----------------//
+#ifndef _AFX_H_
+#define _AFX_H_
 #include <afx.h>
-#include <windows.h>
-#include <iostream>
+#endif
+//#include <windows.h>
+//#include <iostream> //moved to unit_commanders.h
 
 //-------------//
 // MY INCLUDES //
@@ -13,6 +16,8 @@
 #include "menus.h"
 #include "controls.h"
 #include "unit_classes.h"
+#include "unit_commanders.h"
+
 
 //----------//
 // CONTROLS //
@@ -24,18 +29,24 @@
 // FORWARDS //
 //----------//
 LRESULT WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+//LRESULT ChldProc(HWND hChWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 //class windowControls;
 
 //=========//
 // GLOBALS //
 //=========//
 const char *clsName = "TactHEX Battle Calculator";
+//const char *chldName = "Commanders";
 char *title = "TactHEX Battle Calculator";
+//char *chldTitle = "Commanders";
 bool running = true;
 HWND hWnd = NULL;
+HWND hChWnd = NULL;
 mainWindowControls *_mainWindowControls;
 unit* leftUnit = NULL;
 unit* rightUnit = NULL;
+commanderList* leftCommander = NULL;
+commanderList* rightCommander = NULL;
 
 //---------------//
 // PROGRAM ENTRY //
@@ -43,39 +54,57 @@ unit* rightUnit = NULL;
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR pCmdLine, int nCmdShow)
 
 {
-	WNDCLASSEX  WndEx;                             
+	WNDCLASSEX  WndEx, ComWndw;                             
 
-    MSG msg;
+	MSG msg;
 
-    WndEx.cbSize            = sizeof(WNDCLASSEX);                   /* The size, in bytes, of this structure. */
-    WndEx.style             = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;   /* The class style(s) */              
-    WndEx.lpfnWndProc       = (WNDPROC)WndProc;                     /* A pointer to the window procedure. */           
-    WndEx.cbClsExtra        = 0;                                    /* The number of extra bytes to allocate following the window-class structure. */
-    WndEx.cbWndExtra        = 0;                                    /* The number of extra bytes to allocate following the window instance. */
-    WndEx.hIcon             = LoadIcon(NULL, IDI_APPLICATION);      /* A handle to the class icon. */
-    WndEx.hCursor           = LoadCursor(NULL, IDC_ARROW);          /* A handle to the class cursor. */
-    WndEx.hbrBackground     = (HBRUSH)COLOR_APPWORKSPACE;           /* A handle to the class background brush. */
-    WndEx.lpszMenuName      = NULL;                                 /* We're not using a menu here */
-    WndEx.lpszClassName     = clsName;                              /* A pointer to a string that contains the class name */   
-    WndEx.hInstance         = hInstance;                            /* A handle to the instance that contains the window procedure for the class. */          
-    WndEx.hIconSm           = LoadIcon(NULL, IDI_APPLICATION);      /* A handle to a small icon that is associated with the window class */
+	WndEx.cbSize            = sizeof(WNDCLASSEX);                   /* The size, in bytes, of this structure. */
+	WndEx.style             = CS_HREDRAW | CS_VREDRAW /*| CS_OWNDC*/;   /* The class style(s) */              
+	WndEx.lpfnWndProc       = (WNDPROC)WndProc;                     /* A pointer to the window procedure. */           
+	WndEx.cbClsExtra        = 0;                                    /* The number of extra bytes to allocate following the window-class structure. */
+	WndEx.cbWndExtra        = 0;                                    /* The number of extra bytes to allocate following the window instance. */
+	WndEx.hIcon             = LoadIcon(NULL, IDI_APPLICATION);      /* A handle to the class icon. */
+	WndEx.hCursor           = LoadCursor(NULL, IDC_ARROW);          /* A handle to the class cursor. */
+	WndEx.hbrBackground     = (HBRUSH)COLOR_APPWORKSPACE;           /* A handle to the class background brush. */
+	WndEx.lpszMenuName      = NULL;                                 /* We're not using a menu here */
+	WndEx.lpszClassName     = clsName;                              /* A pointer to a string that contains the class name */   
+	WndEx.hInstance         = hInstance;                            /* A handle to the instance that contains the window procedure for the class. */          
+	WndEx.hIconSm           = LoadIcon(NULL, IDI_APPLICATION);      /* A handle to a small icon that is associated with the window class */
 
- 
+	
+//	ComWndw.cbSize			= sizeof(WNDCLASSEX);					
+//	ComWndw.style			= CS_HREDRAW | CS_VREDRAW /*| CS_OWNDC*/;
+//	ComWndw.lpfnWndProc		= (WNDPROC)ChldProc;
+//	ComWndw.cbClsExtra		= 0;
+//	ComWndw.cbWndExtra		= 0;
+//	ComWndw.hIcon			= LoadIcon(NULL, IDI_APPLICATION);  
+//	ComWndw.hCursor			= LoadCursor(NULL, IDC_ARROW);
+//	ComWndw.hbrBackground	= (HBRUSH)COLOR_APPWORKSPACE;
+//	ComWndw.lpszMenuName	= NULL;
+//	ComWndw.lpszClassName	= chldName;
+//	ComWndw.hInstance		= hInstance;
+//	ComWndw.hIconSm			= LoadIcon(NULL, IDI_APPLICATION);
 
 
 	 /* Register the windows class */
     if (!RegisterClassEx(&WndEx))
     {
-        MessageBox(NULL, "Failed to register class", "ERROR", MB_OK | MB_ICONERROR);
+        MessageBox(NULL, "Failed to register class: Main Application Window", "ERROR", MB_OK | MB_ICONERROR);
         return 0;
     }
+
+	/*if (!RegisterClassEx(&ComWndw))
+	{
+		MessageBox(NULL, "Failed to register class: Child Window", "ERROR", MB_OK | MB_ICONERROR);
+		return 0;
+	}*/
  
     /* Create the window */
     if (!(hWnd = CreateWindowEx(WS_EX_APPWINDOW | WS_EX_WINDOWEDGE, /* The extended window style */
                                 clsName,                            /* A pointer to a string that contains the class name */
                                 title,                              /* A pointer to a string that contains the title of the window */
-                                WS_OVERLAPPEDWINDOW |               /* The style of the window being created */
-                                WS_CLIPSIBLINGS | WS_CLIPCHILDREN,             
+                                WS_OVERLAPPEDWINDOW |                /* The style of the window being created */
+                                WS_CLIPCHILDREN,           
                                 CW_USEDEFAULT, CW_USEDEFAULT,       /* initial x,y position of the window */
                                 1024, 768,                           /* initial x,y size of the window */
                                 NULL,                               /* A handle to the parent or owner window */
@@ -83,15 +112,53 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR pCmdLine, int nCmdShow
                                 hInstance,                          /* A handle to the instance of the window */
                                 NULL)))                             /* lParam */
     {  
-        MessageBox(NULL, "Failed to create the window", "ERROR", MB_OK | MB_ICONERROR);
+        MessageBox(NULL, "Failed to create window: Main Application Window", "ERROR", MB_OK | MB_ICONERROR);
         return 0;
     }
+
+/*	if (!(hChWnd = CreateWindowEx(WS_EX_WINDOWEDGE,
+								chldName,
+								chldTitle,
+								 WS_CHILD | WS_CAPTION 
+									| WS_SYSMENU | WS_THICKFRAME 
+									| WS_MINIMIZEBOX | WS_MAXIMIZEBOX,
+								CW_USEDEFAULT, CW_USEDEFAULT,
+								4, 3,
+								hWnd,
+								NULL,
+								hInstance,
+								NULL)))
+	{
+		MessageBox(NULL, "Failed to create window: Child Window", "ERROR", MB_OK | MB_ICONERROR);
+		return 0;
+	}
+	//else
+	//{
+	//	MessageBox(NULL, "Child Window Success", "SUCCESS", MB_OK | MB_ICONERROR);
+	//}*/
+
+
+
+
  
 	// Create the main menu
     CreateMainMenu(hWnd);
 
     /* The window is initially hidden, we need to show it */
     ShowWindow(hWnd, SW_SHOW); 
+
+	
+	//make sure the files needed exist, otherwise create them. 
+	std::ofstream newFile;
+	newFile.open ("commanders.bin");
+	newFile.close();
+	newFile.open ("comm_back.bin");
+	newFile.close();
+	
+	//load the commander objects
+	leftCommander = new commanderList();
+	rightCommander - new commanderList();
+
 
 	// Create Control Object
 	//initControls(hWnd);
@@ -162,6 +229,7 @@ LRESULT WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 			}
 			return 0;
+
 		case WM_CLOSE: 
 			DestroyWindow(hWnd);
 			return 0;
@@ -185,9 +253,10 @@ LRESULT WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 					break;
 
 				case TEST_BUTTON_1:	
-					SendMessage(hWnd, LOWORD(LEFT_UPDATE), 0, 0);
+					MessageBox(hWnd, "TEST!", "TEST", MB_ICONINFORMATION);
 					break;	
-				
+
+			
 				}// End of LOWORD Switch
 
 				switch(HIWORD(wParam))
@@ -224,9 +293,11 @@ LRESULT WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 					break; //Break out of CASE: CBN_SELCHANGE
 				}
 			}
-			break;// Break out of CASE: WM_COMMAND
+			break;// Break out of CASE: WM_COMMAND Should this be return 0;?
 
 		default:
 			return DefWindowProc(hWnd,uMsg,wParam,lParam);
 		}//end of switch(umsg)
 }
+
+

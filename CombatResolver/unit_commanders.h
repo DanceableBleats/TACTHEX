@@ -1,14 +1,20 @@
 #pragma once
 
+#ifndef _AFX_H_
+#define _AFX_H_
 #include <afx.h>
+#endif
+
 #include <vector>
+#include <iostream>
+#include <fstream>
 
 
 class commander
 {
 public:
 
-	commander();
+	commander(CString csName, int a, int d, int hp);
 	~commander();
 
 	int attackBonus;
@@ -31,4 +37,12 @@ public:
 	~commanderList();
 
 	std::vector<commander*> commanderVector;
+	std::vector<commander*>::iterator iter;
+
+	std::fstream fCommanderList;
+	std::fstream fListBackup;
+
+
+	bool checkExists();
+	bool saveCommander();
 };

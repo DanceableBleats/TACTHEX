@@ -1,6 +1,9 @@
 #pragma once
 
+#ifndef _AFX_H_
+#define _AFX_H_
 #include <afx.h>
+#endif
 
 
 enum UNIT_CLASS

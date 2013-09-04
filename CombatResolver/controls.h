@@ -1,5 +1,14 @@
 #pragma once
-#include <Windows.h>
+
+//#ifndef _WINDOWS_
+//#include <Windows.h>
+//#endif
+
+#ifndef _AFX_H_
+#define _AFX_H_
+#include <afx.h>
+#endif
+
 #include <CommCtrl.h>
 
 //Update (Application Messages)
@@ -32,17 +41,27 @@
 #define TEST_BUTTON_1					201
 #define MELEE_COMBAT					202
 #define RANGED_ATTACK					203
+#define COMMANDER_SAVE					204
+#define COMMANDER_NEW					205
 
 //Drop downs
 #define LEFT_UNIT_DROP_DOWN				301
 #define LEFT_COMMANDER_DROP_DOWN		302
 #define RIGHT_UNIT_DROP_DOWN			303
 #define RIGHT_COMMANDER_DROP_DOWN		304
+#define EDIT_COMMANDER_DROP_DOWN		305
 
 //Outcomes
 #define WINNER							401
 #define LEFT_REMAINING_HP				402
 #define RIGHT_REMAINING_HP				403
+
+//Commander Edit Boxes
+#define COMMANDER_PLAYER_NAME			501
+#define COMMANDER_CHARACTER_NAME		502
+#define COMMANDER_ATTACK_BONUS			503
+#define COMMANDER_DEFENSE_BONUS			504
+#define COMMANDER_HP_BONUS				505
 
 
 
@@ -58,9 +77,11 @@ public:
 	HWND hRightUnitComboBox;	
 	HWND hLeftCommanderComboBox;
 	HWND hRightCommanderComboBox;
+	HWND hEditCommanderComboBox;
 	
 	//Buttons
 	HWND hWndTestButton1;
+	HWND hOpenCommandersButton;
 
 	//left unit stat boxes
 	HWND hLeftAttack;

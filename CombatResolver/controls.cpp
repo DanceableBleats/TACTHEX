@@ -1,16 +1,21 @@
 #include "controls.h"
+//#include "unit_classes.h"
+#include "unit_commanders.h"
+
+extern commanderList* leftCommander;
+extern commanderList* rightCommander;
 
 mainWindowControls::mainWindowControls(HWND hWnd)
 {
 
 	// Create a push button                   BUTTON EXAMPLE!
-	hWndTestButton1=CreateWindowEx(NULL,
+	hOpenCommandersButton=CreateWindowEx(NULL,
 		"BUTTON",
-		"Test",
+		"test",
 		WS_TABSTOP|WS_VISIBLE|
 		WS_CHILD|BS_DEFPUSHBUTTON,
-		300,
-		400,
+		360,
+		320,
 		100,
 		24,
 		hWnd,
@@ -73,7 +78,7 @@ mainWindowControls::mainWindowControls(HWND hWnd)
 		CBS_DROPDOWNLIST | CBS_HASSTRINGS | WS_CHILD | WS_OVERLAPPED | WS_VISIBLE,
 		50, 
 		90, 
-		220, 
+		400, 
 		20, 
 		hWnd, 
 		(HMENU)LEFT_COMMANDER_DROP_DOWN, 
@@ -86,14 +91,21 @@ mainWindowControls::mainWindowControls(HWND hWnd)
 		CBS_DROPDOWNLIST | CBS_HASSTRINGS | WS_CHILD | WS_OVERLAPPED | WS_VISIBLE,
 		550, 
 		90, 
-		220, 
+		400, 
 		20, 
 		hWnd, 
 		(HMENU)RIGHT_COMMANDER_DROP_DOWN, 
 		GetModuleHandle(NULL),
 		NULL);
 
-
+		
+	for (leftCommander->iter = leftCommander->commanderVector.begin(); leftCommander->iter != leftCommander->commanderVector.end(); (leftCommander->iter)++)
+	{
+		std::vector<commander*>::iterator iter2 = leftCommander->iter;
+		
+		SendMessage(hLeftCommanderComboBox,(UINT) CB_ADDSTRING,(WPARAM) 0,(LPARAM) (*iter2)->sName.GetBuffer());
+		SendMessage(hRightCommanderComboBox,(UINT) CB_ADDSTRING,(WPARAM) 0,(LPARAM) (*iter2)->sName.GetBuffer());
+	}
 
 
       
@@ -102,7 +114,7 @@ mainWindowControls::mainWindowControls(HWND hWnd)
     //  SendMessage(hLeftCommanderComboBox, CB_SETCURSEL, (WPARAM)0, (LPARAM)0);
 	//  SendMessage(hRightCommanderComboBox, CB_SETCURSEL, (WPARAM)0, (LPARAM)0);
 
-
+	
 
 	//Left stat boxes
 	hLeftAttack=CreateWindowEx(WS_EX_CLIENTEDGE,
