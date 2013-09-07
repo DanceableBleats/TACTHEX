@@ -52,10 +52,10 @@ commanderList::commanderList()
 			int attack = 0, defense = 0, hp = 0;
 MessageBox(NULL, L"Breakpoint.", L"breakpoint", NULL);
 			//read one line
-			fCommanderList.read((char*)name, 50);
-			fCommanderList.read((char*)att, 2);
-			fCommanderList.read((char*)def, 2);
-			fCommanderList.read((char*)hp, 2);
+			fCommanderList.read(name, 50);
+			fCommanderList.read(att, 2);
+			fCommanderList.read(def, 2);
+			fCommanderList.read(hp, 2);
 
 			//trim
 			TCHAR *p_buff = bufftrim(name, 50);
