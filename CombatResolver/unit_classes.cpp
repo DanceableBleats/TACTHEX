@@ -84,26 +84,19 @@ unit::unit(UNIT_CLASS u)
 
 	}//end of switch
 
-	sAttack.Format("%d\n", attack);
-	sDefense.Format("%d\n", defense);
-	sHP.Format("%d\n", hp);
+	//sAttack.Format("%d\n", attack);
+	//sDefense.Format("%d\n", defense);
+	//sHP.Format("%d\n", hp);
+
+	*bAttack = attack;
+	*bDefense = defense;
+	*bHP - hp;
+
 
 	//MessageBox(NULL, TEXT("Created."), TEXT("Created."), MB_OK);
 
 }
 
-/*
-SWORDSMAN,
-PIKEMAN,
-PIKEMAN_BONUS,
-ARCHER,
-CAVALRY,
-CAVALRY_BONUS,
-FLYER,
-FLYER_BONUS,
-UNDEAD,
-BANDIT\
-*/
 
 unit::~unit()
 {

@@ -1,9 +1,15 @@
 #pragma once
+#include <Windows.h>
 
-#ifndef _AFX_H_
-#define _AFX_H_
-#include <afx.h>
-#endif
+
+//#ifndef _AFX_H_
+//#define _AFX_H_
+//#include <afx.h>
+//#endif
+
+//forward
+int bufftoi(TCHAR[]);
+
 
 
 enum UNIT_CLASS
@@ -32,9 +38,13 @@ public:
 	int defense;
 	int hp;
 
-	CString sAttack;
-	CString sDefense;
-	CString sHP;
+	TCHAR bAttack[3];
+	TCHAR bDefense[3];
+	TCHAR bHP[3];
+
+	//CString sAttack;
+	//CString sDefense;
+	//CString sHP;
 
 	
 };

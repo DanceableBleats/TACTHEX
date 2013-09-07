@@ -13,8 +13,8 @@ mainWindowControls::mainWindowControls(HWND hWnd)
 
 	// Create a push button                   BUTTON EXAMPLE!
 	hWndTestButton1=CreateWindowEx(NULL,
-		"BUTTON",
-		"test",
+		L"BUTTON",
+		L"test",
 		WS_TABSTOP|WS_VISIBLE|
 		WS_CHILD|BS_DEFPUSHBUTTON,
 		360,
@@ -120,9 +120,9 @@ mainWindowControls::mainWindowControls(HWND hWnd)
 	{
 		std::vector<commander*>::iterator iter2 = editCommander->iter;
 		
-		SendMessage(hLeftCommanderComboBox,(UINT) CB_ADDSTRING,(WPARAM) 0,(LPARAM) (*iter2)->csName.GetBuffer());
-		SendMessage(hRightCommanderComboBox,(UINT) CB_ADDSTRING,(WPARAM) 0,(LPARAM) (*iter2)->csName.GetBuffer());
-		SendMessage(hEditCommanderName,(UINT) CB_ADDSTRING,(WPARAM) 0,(LPARAM) (*iter2)->csName.GetBuffer());
+		SendMessage(hLeftCommanderComboBox,(UINT) CB_ADDSTRING,(WPARAM) 0,(LPARAM) (*iter2)->bName);
+		SendMessage(hRightCommanderComboBox,(UINT) CB_ADDSTRING,(WPARAM) 0,(LPARAM) (*iter2)->bName);
+		SendMessage(hEditCommanderName,(UINT) CB_ADDSTRING,(WPARAM) 0,(LPARAM) (*iter2)->bName);
 		
 	}
 
@@ -136,8 +136,8 @@ mainWindowControls::mainWindowControls(HWND hWnd)
 
 	//Left stat boxes
 	hLeftAttack=CreateWindowEx(WS_EX_CLIENTEDGE,
-		"EDIT",
-		"",
+		L"EDIT",
+		L"",
 		WS_CHILD|WS_VISIBLE,
 		50,
 		140,
@@ -149,8 +149,8 @@ mainWindowControls::mainWindowControls(HWND hWnd)
 		NULL);
 
 	hLeftDefense=CreateWindowEx(WS_EX_CLIENTEDGE,
-		"EDIT",
-		"",
+		L"EDIT",
+		L"",
 		WS_CHILD|WS_VISIBLE,
 		50,
 		180,
@@ -162,8 +162,8 @@ mainWindowControls::mainWindowControls(HWND hWnd)
 		NULL);
 
 	hLeftHP=CreateWindowEx(WS_EX_CLIENTEDGE,
-		"EDIT",
-		"",
+		L"EDIT",
+		L"",
 		WS_CHILD|WS_VISIBLE,
 		50,
 		220,
@@ -175,8 +175,8 @@ mainWindowControls::mainWindowControls(HWND hWnd)
 		NULL);
 
 	hLeftAttackBonus=CreateWindowEx(WS_EX_CLIENTEDGE,
-		"EDIT",
-		"",
+		L"EDIT",
+		L"",
 		WS_CHILD|WS_VISIBLE,
 		130,
 		140,
@@ -188,8 +188,8 @@ mainWindowControls::mainWindowControls(HWND hWnd)
 		NULL);
 
 	hLeftDefenseBonus=CreateWindowEx(WS_EX_CLIENTEDGE,
-		"EDIT",
-		"",
+		L"EDIT",
+		L"",
 		WS_CHILD|WS_VISIBLE,
 		130,
 		180,
@@ -201,8 +201,8 @@ mainWindowControls::mainWindowControls(HWND hWnd)
 		NULL);
 
 	hLeftHPBonus=CreateWindowEx(WS_EX_CLIENTEDGE,
-		"EDIT",
-		"",
+		L"EDIT",
+		L"",
 		WS_CHILD|WS_VISIBLE,
 		130,
 		220,
@@ -214,8 +214,8 @@ mainWindowControls::mainWindowControls(HWND hWnd)
 		NULL);
 
 	hLeftAttackTotal=CreateWindowEx(WS_EX_CLIENTEDGE,
-		"EDIT",
-		"",
+		L"EDIT",
+		L"",
 		WS_CHILD|WS_VISIBLE,
 		210,
 		140,
@@ -227,8 +227,8 @@ mainWindowControls::mainWindowControls(HWND hWnd)
 		NULL);
 
 	hLeftDefenseTotal=CreateWindowEx(WS_EX_CLIENTEDGE,
-		"EDIT",
-		"",
+		L"EDIT",
+		L"",
 		WS_CHILD|WS_VISIBLE,
 		210,
 		180,
@@ -240,8 +240,8 @@ mainWindowControls::mainWindowControls(HWND hWnd)
 		NULL);
 
 	hLeftHPTotal=CreateWindowEx(WS_EX_CLIENTEDGE,
-		"EDIT",
-		"",
+		L"EDIT",
+		L"",
 		WS_CHILD|WS_VISIBLE,
 		210,
 		220,
@@ -254,8 +254,8 @@ mainWindowControls::mainWindowControls(HWND hWnd)
 
 	//Right stat boxes
 	hRightAttack=CreateWindowEx(WS_EX_CLIENTEDGE,
-		"EDIT",
-		"",
+		L"EDIT",
+		L"",
 		WS_CHILD|WS_VISIBLE,
 		550,
 		140,
@@ -267,8 +267,8 @@ mainWindowControls::mainWindowControls(HWND hWnd)
 		NULL);
 
 	hRightDefense=CreateWindowEx(WS_EX_CLIENTEDGE,
-		"EDIT",
-		"",
+		L"EDIT",
+		L"",
 		WS_CHILD|WS_VISIBLE,
 		550,
 		180,
@@ -280,8 +280,8 @@ mainWindowControls::mainWindowControls(HWND hWnd)
 		NULL);
 
 	hRightHP=CreateWindowEx(WS_EX_CLIENTEDGE,
-		"EDIT",
-		"",
+		L"EDIT",
+		L"",
 		WS_CHILD|WS_VISIBLE,
 		550,
 		220,
@@ -293,8 +293,8 @@ mainWindowControls::mainWindowControls(HWND hWnd)
 		NULL);
 
 	hRightAttackBonus=CreateWindowEx(WS_EX_CLIENTEDGE,
-		"EDIT",
-		"",
+		L"EDIT",
+		L"",
 		WS_CHILD|WS_VISIBLE,
 		630,
 		140,
@@ -306,8 +306,8 @@ mainWindowControls::mainWindowControls(HWND hWnd)
 		NULL);
 
 	hRightDefenseBonus=CreateWindowEx(WS_EX_CLIENTEDGE,
-		"EDIT",
-		"",
+		L"EDIT",
+		L"",
 		WS_CHILD|WS_VISIBLE,
 		630,
 		180,
@@ -319,8 +319,8 @@ mainWindowControls::mainWindowControls(HWND hWnd)
 		NULL);
 
 	hRightHPBonus=CreateWindowEx(WS_EX_CLIENTEDGE,
-		"EDIT",
-		"",
+		L"EDIT",
+		L"",
 		WS_CHILD|WS_VISIBLE,
 		630,
 		220,
@@ -332,8 +332,8 @@ mainWindowControls::mainWindowControls(HWND hWnd)
 		NULL);
 
 	hRightAttackTotal=CreateWindowEx(WS_EX_CLIENTEDGE,
-		"EDIT",
-		"",
+		L"EDIT",
+		L"",
 		WS_CHILD|WS_VISIBLE,
 		710,
 		140,
@@ -345,8 +345,8 @@ mainWindowControls::mainWindowControls(HWND hWnd)
 		NULL);
 
 	hRightDefenseTotal=CreateWindowEx(WS_EX_CLIENTEDGE,
-		"EDIT",
-		"",
+		L"EDIT",
+		L"",
 		WS_CHILD|WS_VISIBLE,
 		710,
 		180,
@@ -358,8 +358,8 @@ mainWindowControls::mainWindowControls(HWND hWnd)
 		NULL);
 
 	hRightHPTotal=CreateWindowEx(WS_EX_CLIENTEDGE,
-		"EDIT",
-		"",
+		L"EDIT",
+		L"",
 		WS_CHILD|WS_VISIBLE,
 		710,
 		220,
@@ -372,8 +372,8 @@ mainWindowControls::mainWindowControls(HWND hWnd)
 
 	//Outcomes
 	hWinner=CreateWindowEx(WS_EX_CLIENTEDGE,
-		"EDIT",
-		"",
+		L"EDIT",
+		L"",
 		WS_CHILD|WS_VISIBLE,
 		380,
 		290,
@@ -385,8 +385,8 @@ mainWindowControls::mainWindowControls(HWND hWnd)
 		NULL);
 
 	hLeftRemainingHP=CreateWindowEx(WS_EX_CLIENTEDGE,
-		"EDIT",
-		"",
+		L"EDIT",
+		L"",
 		WS_CHILD|WS_VISIBLE,
 		300,
 		290,
@@ -398,8 +398,8 @@ mainWindowControls::mainWindowControls(HWND hWnd)
 		NULL);
 
 	hRightRemainingHP=CreateWindowEx(WS_EX_CLIENTEDGE,
-		"EDIT",
-		"",
+		L"EDIT",
+		L"",
 		WS_CHILD|WS_VISIBLE,
 		460,
 		290,
@@ -433,8 +433,8 @@ mainWindowControls::mainWindowControls(HWND hWnd)
 
 	//Edits
 	hEditCommanderAttack=CreateWindowEx(WS_EX_CLIENTEDGE,
-		"EDIT",
-		"",
+		L"EDIT",
+		L"",
 		WS_CHILD|WS_VISIBLE,
 		380,
 		440,
@@ -449,8 +449,8 @@ mainWindowControls::mainWindowControls(HWND hWnd)
 
 
 	hEditCommanderDefense=CreateWindowEx(WS_EX_CLIENTEDGE,
-		"EDIT",
-		"",
+		L"EDIT",
+		L"",
 		WS_CHILD|WS_VISIBLE,
 		380,
 		480,
@@ -462,8 +462,8 @@ mainWindowControls::mainWindowControls(HWND hWnd)
 		NULL);
 
 	hEditCommanderHP=CreateWindowEx(WS_EX_CLIENTEDGE,
-		"EDIT",
-		"",
+		L"EDIT",
+		L"",
 		WS_CHILD|WS_VISIBLE,
 		380,
 		520,
@@ -476,8 +476,8 @@ mainWindowControls::mainWindowControls(HWND hWnd)
 
 	//Buttons
 	hNewCommanderButton=CreateWindowEx(NULL,
-		"BUTTON",
-		"New",
+		L"BUTTON",
+		L"New",
 		WS_TABSTOP|WS_VISIBLE|
 		WS_CHILD|BS_DEFPUSHBUTTON,
 		260,
@@ -490,8 +490,8 @@ mainWindowControls::mainWindowControls(HWND hWnd)
 		NULL);
 
 	hSaveCommanderButton=CreateWindowEx(NULL,
-		"BUTTON",
-		"Save",
+		L"BUTTON",
+		L"Save",
 		WS_TABSTOP|WS_VISIBLE|
 		WS_CHILD|BS_DEFPUSHBUTTON,
 		380,
@@ -504,8 +504,8 @@ mainWindowControls::mainWindowControls(HWND hWnd)
 		NULL);
 
 	hDeleteCommanderButton=CreateWindowEx(NULL,
-		"BUTTON",
-		"Delete",
+		L"BUTTON",
+		L"Delete",
 		WS_TABSTOP|WS_VISIBLE|
 		WS_CHILD|BS_DEFPUSHBUTTON,
 		500,

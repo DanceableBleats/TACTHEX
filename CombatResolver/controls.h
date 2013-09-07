@@ -1,15 +1,14 @@
 #pragma once
 
-//#ifndef _WINDOWS_
-//#include <Windows.h>
+#include <Windows.h>
+#include <CommCtrl.h>
+
+//#ifndef _AFX_H_
+//#define _AFX_H_
+//#include <afx.h>
 //#endif
 
-#ifndef _AFX_H_
-#define _AFX_H_
-#include <afx.h>
-#endif
 
-#include <CommCtrl.h>
 
 //Update (Application Messages)
 #define LEFT_UPDATE						901
