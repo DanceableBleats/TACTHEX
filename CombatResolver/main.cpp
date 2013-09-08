@@ -309,7 +309,7 @@ LRESULT WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 						int iHP = bufftoi(bHP);
 
 						editCommander->saveCommander(bName, iAtt, iDef, iHP);
-						editCommander->saveList();
+						//editCommander->saveList();
 
 						break;
 

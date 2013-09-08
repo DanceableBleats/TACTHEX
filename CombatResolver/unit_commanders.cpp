@@ -157,41 +157,43 @@ bool commanderList::saveList()
 	}
 	else
 	{
-		
-		for (iter = commanderVector.begin(); iter != commanderVector.end(); iter++)
+		if (!commanderVector.empty())
 		{
-			TCHAR buff[60];
-			memset(buff, ' ', 56);
+			for (iter = commanderVector.begin(); iter != commanderVector.end(); iter++)
+			{
+				TCHAR buff[60];
+				memset(buff, ' ', 56);
 			
-			int len = (*iter)->getNameLength();
+				int len = (*iter)->getNameLength();
 
-MessageBox(NULL, L"Breakpoint 1.", L"Breakpoint", NULL);
-			for (int i = 0; i < len; ++i)
-			{
-				buff[i] = (*iter)->bName[i];
-			}//end of inner FOR loop
-			buff[50] = (*iter)->bAttackBonus[0];
-			buff[51] = (*iter)->bAttackBonus[1];
-			buff[52] = (*iter)->bDefenseBonus[0];
-			buff[53] = (*iter)->bDefenseBonus[1];
-			buff[54] = (*iter)->bHPBonus[0];
-			buff[55] = (*iter)->bHPBonus[1];
-MessageBox(NULL, L"Breakpoint 2.", L"Breakpoint", NULL);
-			DWORD dwBytesWritten;
-			DWORD dwBytesToWrite = 56;
-			MessageBox(NULL, L"Breakpoint 3.", L"Breakpoint", NULL);
-			if (FALSE == WriteFile( 
-							fCommanderList,				// open file handle
-							buff,						// start of data to write
-							dwBytesToWrite,				// number of bytes to write
-							&dwBytesWritten,			// number of bytes that were written
-							NULL));						// no overlapped structure
-			{
-				MessageBox(NULL, L"Error: unable to write to commanders.bin.", L"ERROR", NULL);
-				return 0;
-			}
+	MessageBox(NULL, L"Breakpoint 1.", L"Breakpoint", NULL);
+				for (int i = 0; i < len; ++i)
+				{
+					buff[i] = (*iter)->bName[i];
+				}//end of inner FOR loop
+				buff[50] = (*iter)->bAttackBonus[0];
+				buff[51] = (*iter)->bAttackBonus[1];
+				buff[52] = (*iter)->bDefenseBonus[0];
+				buff[53] = (*iter)->bDefenseBonus[1];
+				buff[54] = (*iter)->bHPBonus[0];
+				buff[55] = (*iter)->bHPBonus[1];
+	MessageBox(NULL, L"Breakpoint 2.", L"Breakpoint", NULL);
+				DWORD dwBytesWritten;
+				DWORD dwBytesToWrite = 56;
+				MessageBox(NULL, L"Breakpoint 3.", L"Breakpoint", NULL);
+				if (FALSE == WriteFile( 
+								fCommanderList,				// open file handle
+								buff,						// start of data to write
+								dwBytesToWrite,				// number of bytes to write
+								&dwBytesWritten,			// number of bytes that were written
+								NULL));						// no overlapped structure
+				{
+					MessageBox(NULL, L"Error: unable to write to commanders.bin.", L"ERROR", NULL);
+					return 0;
+				}
 
-		}//end of for
+			}//end of for
+		}//end of IF !commanderVector.empty()
 		return 1;
 	}
 
