@@ -33,6 +33,7 @@ LRESULT WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 //class windowControls;
 int strtoi(char[]);
 int bufftoi(TCHAR[]);
+int bufftoi(TCHAR[], int len);
 TCHAR* bufftrim(TCHAR buff[], int len);
 
 //=========//
@@ -153,30 +154,49 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR pCmdLine, int nCmdShow
 
 	
 	//make sure the files needed exist, otherwise create them. 
-	std::ifstream checkFile;
-	std::ofstream newFile;
-	checkFile.open("commanders.bin");
-	if (!checkFile.is_open())
-	{
-		MessageBox(NULL, L"Commanders.bin not opened, creating new.", L"file not found", MB_OK);
-		newFile.open("commanders.bin");
-		newFile.close();
-	}
-	else
-	{
-		checkFile.close();
-	}
-	checkFile.open("comm_back.bin");
-	if (!checkFile.is_open())
-	{
-		MessageBox(NULL, L"comm_back.bin not opened, creating new.", L"file not found", MB_OK);
-		newFile.open("comm_back.bin");
-		newFile.close();
-	}
-	else
-	{
-		checkFile.close();
-	}
+	HANDLE fFileCheck = CreateFile(L"commanders.bin",		
+                       GENERIC_READ | GENERIC_WRITE,					
+                       0,								
+                       NULL,							
+                       OPEN_ALWAYS,					
+                       FILE_ATTRIBUTE_NORMAL,			
+                       NULL);	
+	CloseHandle(fFileCheck);
+	
+	fFileCheck = CreateFile(L"comm_back.bin",		
+                       GENERIC_READ | GENERIC_WRITE,					
+                       0,								
+                       NULL,							
+                       OPEN_ALWAYS,					
+                       FILE_ATTRIBUTE_NORMAL,			
+                       NULL);
+	CloseHandle(fFileCheck);
+
+
+	//std::ifstream checkFile;
+	//std::ofstream newFile;
+	//checkFile.open("commanders.bin");
+	//if (!checkFile.is_open())
+	//{
+	//	MessageBox(NULL, L"Commanders.bin not opened, creating new.", L"file not found", MB_OK);
+	//	newFile.open("commanders.bin");
+	//	newFile.close();
+	//}
+	//else
+	//{
+	//	checkFile.close();
+	//}
+	//checkFile.open("comm_back.bin");
+	//if (!checkFile.is_open())
+	//{
+	//	MessageBox(NULL, L"comm_back.bin not opened, creating new.", L"file not found", MB_OK);
+	//	newFile.open("comm_back.bin");
+	//	newFile.close();
+	//}
+	//else
+	//{
+	//	checkFile.close();
+	//}
 	
 	//load the commander objects
 	//leftCommander = new commanderList();
@@ -259,42 +279,42 @@ LRESULT WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 					}
 					break;	
 
-				//case COMMANDER_SAVE:
-				//	{
-				//		//MessageBox(hWnd, "Button clicked", "TEST", MB_ICONINFORMATION);
+				case COMMANDER_SAVE:
+					{
+						//MessageBox(hWnd, "Button clicked", "TEST", MB_ICONINFORMATION);
 
-				//		int nameLen = GetWindowTextLength(_mainWindowControls->hEditCommanderName);
-				//		int attLen = GetWindowTextLength(_mainWindowControls->hEditCommanderAttack);
-				//		int defLen = GetWindowTextLength(_mainWindowControls->hEditCommanderDefense);
-				//		int hpLen = GetWindowTextLength(_mainWindowControls->hEditCommanderHP);
+						int nameLen = GetWindowTextLength(_mainWindowControls->hEditCommanderName);
+						int attLen = GetWindowTextLength(_mainWindowControls->hEditCommanderAttack);
+						int defLen = GetWindowTextLength(_mainWindowControls->hEditCommanderDefense);
+						int hpLen = GetWindowTextLength(_mainWindowControls->hEditCommanderHP);
 
-				//		TCHAR bName[50];
-				//		memset(bName, ' ', 50);
-				//		GetWindowText(_mainWindowControls->hEditCommanderName, bName, nameLen + 1);
-				//		CString csName(bName);
+						TCHAR bName[50];
+						memset(bName, ' ', 50);
+						GetWindowText(_mainWindowControls->hEditCommanderName, bName, nameLen + 1);
+						//CString csName(bName);
 
-				//		TCHAR bAtt[3];
-				//		memset(bAtt, '0', 3);
-				//		GetWindowText(_mainWindowControls->hEditCommanderAttack, bAtt, attLen + 1);
-				//		int iAtt = bufftoi(bAtt);
+						TCHAR bAtt[3];
+						memset(bAtt, '0', 3);
+						GetWindowText(_mainWindowControls->hEditCommanderAttack, bAtt, attLen + 1);
+						int iAtt = bufftoi(bAtt);
 
-				//		TCHAR bDef[3];
-				//		memset(bDef, '0', 3);
-				//		GetWindowText(_mainWindowControls->hEditCommanderDefense, bDef, defLen + 1);
-				//		int iDef = bufftoi(bDef);
+						TCHAR bDef[3];
+						memset(bDef, '0', 3);
+						GetWindowText(_mainWindowControls->hEditCommanderDefense, bDef, defLen + 1);
+						int iDef = bufftoi(bDef);
 
-				//		TCHAR bHP[3];
-				//		memset(bHP, '0', 3);
-				//		GetWindowText(_mainWindowControls->hEditCommanderHP, bHP, hpLen + 1);
-				//		int iHP = bufftoi(bHP);
+						TCHAR bHP[3];
+						memset(bHP, '0', 3);
+						GetWindowText(_mainWindowControls->hEditCommanderHP, bHP, hpLen + 1);
+						int iHP = bufftoi(bHP);
 
-				//		editCommander->saveCommander(bName, iAtt, iDef, iHP);
-				//		editCommander->saveList();
+						editCommander->saveCommander(bName, iAtt, iDef, iHP);
+						editCommander->saveList();
 
-				//		break;
+						break;
 
 
-				//	}//end of COMMANDER_SAVE button case
+					}//end of COMMANDER_SAVE button case
 
 			
 				}// End of LOWORD Switch
@@ -440,6 +460,55 @@ int bufftoi(TCHAR buff[])
 	}
 	return x;
 }
+int bufftoi(TCHAR buff[], int len)
+{
+	if (len == 0){return 0;}
+	int x = 0, m = 0;
+	int i = len - 1;
+
+	for (i; i >= 0; --i)
+	{
+		int n = 0;
+		switch (buff[i])
+		{
+		case '0':
+			n = 0;
+			break;
+		case '1':
+			n = 1;
+			break;
+		case '2':
+			n = 2;
+			break;
+		case '3':
+			n = 3;
+			break;
+		case '4':
+			n = 4;
+			break;
+		case '5':
+			n = 5;
+			break;
+		case '6':
+			n = 6;
+			break;
+		case '7':
+			n = 7;
+			break;
+		case '8':
+			n = 8;
+			break;
+		case '9':
+			n = 9;
+			break;
+		}
+
+		x += ((pow(10.0, m)) * n);
+		++m;
+	}
+	return x;
+}
+
 
 TCHAR* bufftrim(TCHAR buff[], int len)
 {

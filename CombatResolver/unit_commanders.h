@@ -7,8 +7,9 @@
 
 #include <Windows.h>
 #include <vector>
-#include <iostream>
-#include <fstream>
+//#include <iostream>
+//#include <fstream>
+#include <stdio.h>
 
 #include "controls.h"
 
@@ -16,6 +17,7 @@ extern mainWindowControls *_mainWindowControls;
 class commanderList;
 TCHAR* bufftrim(TCHAR buff[], int len);
 int bufftoi(TCHAR buff[]);
+int bufftoi(TCHAR[], int len);
 
 class commander
 {
@@ -35,6 +37,8 @@ public:
 	TCHAR bDefenseBonus[3];
 	TCHAR bHPBonus[3];
 
+
+
 	//CString csName;
 	//CString csAttackBonus;
 	//CString csDefenseBonus;
@@ -53,9 +57,11 @@ public:
 	std::vector<commander*> commanderVector;
 	std::vector<commander*>::iterator iter;
 
-	std::fstream fCommanderList;
-	std::fstream fListBackup;
+	//std::fstream fCommanderList;
+	//std::fstream fListBackup;
 
+	HANDLE fCommanderList;
+	HANDLE fListBackup;
 
 	bool checkExists();
 	bool saveCommander(TCHAR name[], int a, int d, int hp);
